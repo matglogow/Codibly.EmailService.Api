@@ -2,6 +2,7 @@
 using AutoMapper;
 using Codibly.EmailService.Api.Dtos;
 using Codibly.EmailService.Api.Models;
+using Codibly.EmailService.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -60,14 +61,16 @@ namespace Codibly.EmailService.Api.Services.Configuration
                 options.UseLazyLoadingProxies();
             });
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = $"Codibly Email Service - Public API",
                     Version = "v1"
                 });
             });
+
+            services.AddTransient<IEmailService, Services.EmailService>();
         }
 
         #endregion
