@@ -8,6 +8,8 @@
 
         public static string MIGRATION_ASSEMBLY_CONFIG_KEY = "MigrationAssembly";
 
+        public static string SMTP_CONFIG_KEY = "Smtp";
+
         #endregion
     }
 }

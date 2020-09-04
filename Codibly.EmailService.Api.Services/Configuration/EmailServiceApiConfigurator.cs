@@ -3,6 +3,7 @@ using AutoMapper;
 using Codibly.EmailService.Api.Dtos;
 using Codibly.EmailService.Api.Models;
 using Codibly.EmailService.Api.Services.Interfaces;
+using Codibly.EmailService.Api.Services.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,8 @@ namespace Codibly.EmailService.Api.Services.Configuration
         {
             ValidateConfiguration(configuration);
 
+            services.Configure<SmtpSettings>(configuration.GetSection(Constants.SMTP_CONFIG_KEY));
+
             services.AddControllers();
 
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
@@ -71,6 +74,7 @@ namespace Codibly.EmailService.Api.Services.Configuration
             });
 
             services.AddTransient<IEmailService, Services.EmailService>();
+            services.AddTransient<IMailSenderService, MailSenderService>();
         }
 
         #endregion

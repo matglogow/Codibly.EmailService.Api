@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Codibly.EmailService.Api.Models.Models.Enums;
 
@@ -14,6 +15,8 @@ namespace Codibly.EmailService.Api.Models.Models
 
         [MaxLength(100)]
         public string Sender { get; set; }
+
+        public DateTimeOffset? SendOn { get; set; }
 
         public EmailStateEnum State { get; set; }
 

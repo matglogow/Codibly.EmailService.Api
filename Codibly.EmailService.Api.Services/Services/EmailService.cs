@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -6,6 +7,7 @@ using Codibly.EmailService.Api.Dtos.Enums;
 using Codibly.EmailService.Api.Dtos.Models;
 using Codibly.EmailService.Api.Models;
 using Codibly.EmailService.Api.Models.Models;
+using Codibly.EmailService.Api.Models.Models.Enums;
 using Codibly.EmailService.Api.Services.Exceptions;
 using Codibly.EmailService.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +54,16 @@ namespace Codibly.EmailService.Api.Services.Services
             return _mapper.Map<EmailStateEnumDto>(email.State);
         }
 
+        public async Task<ICollection<EmailModel>> GetAllPendingEmails()
+        {
+            var emails = await _dbContext.Emails.AsNoTracking()
+                .Include(e => e.Recipients)
+                .Where(e => e.State == EmailStateEnum.Pending)
+                .ToListAsync();
+
+            return emails;
+        }
+
         public async Task<EmailDto> GetEmail(int id)
         {
             var email = await _dbContext.Emails.AsNoTracking()
@@ -90,11 +102,7 @@ namespace Codibly.EmailService.Api.Services.Services
 
             ValidateEmailRecipients(data.Recipients);
 
-            var email = await _dbContext.Emails
-                .Include(e => e.Recipients)
-                .FirstOrDefaultAsync(e => e.Id == id);
-
-            _ = email ?? throw new NotFoundException($"Email with id: {id} was not found");
+            EmailModel email = await RetrieveEmailFromDb(id);
 
             email.Content = data.Content;
             email.Subject = data.Subject;
@@ -105,9 +113,30 @@ namespace Codibly.EmailService.Api.Services.Services
             return _mapper.Map<EmailDto>(email);
         }
 
+        public async Task UpdateEmailState(int id, DateTimeOffset sendOn)
+        {
+            EmailModel email = await RetrieveEmailFromDb(id);
+
+            email.State = EmailStateEnum.Send;
+            email.SendOn = sendOn;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
         #endregion
 
         #region Private methods
+
+        private async Task<EmailModel> RetrieveEmailFromDb(int id)
+        {
+            var email = await _dbContext.Emails
+                .Include(e => e.Recipients)
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            _ = email ?? throw new NotFoundException($"Email with id: {id} was not found");
+
+            return email;
+        }
 
         private ICollection<Recipient> CreateEmailRecipients(EmailModel email, ICollection<string> recipientList)
         {
