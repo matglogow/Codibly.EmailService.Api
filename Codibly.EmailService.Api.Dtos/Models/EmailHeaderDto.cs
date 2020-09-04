@@ -1,7 +1,7 @@
 ﻿using System;
 using Codibly.EmailService.Api.Dtos.Enums;
 
-namespace Codibly.EmailService.Api.Dtos.Dtos
+namespace Codibly.EmailService.Api.Dtos.Models
 {
     public class EmailHeaderDto
     {

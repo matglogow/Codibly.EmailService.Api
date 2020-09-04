@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
-using Codibly.EmailService.Api.Dtos.Dtos;
 using Codibly.EmailService.Api.Dtos.Enums;
+using Codibly.EmailService.Api.Dtos.Models;
 using EmailModel = Codibly.EmailService.Api.Models.Models.Email;
 using EmailStateEnumModel = Codibly.EmailService.Api.Models.Models.Enums.EmailStateEnum;
 
@@ -16,6 +17,7 @@ namespace Codibly.EmailService.Api.Dtos
             CreateEnumsMapping();
             CreateEmailHeaderDtoMapping();
             CreateEmailCreateableDtoMapping();
+            CreateEmailDtoMapping();
         }
 
         #endregion
@@ -30,6 +32,12 @@ namespace Codibly.EmailService.Api.Dtos
                 .ForMember(m => m.State, opt => opt.MapFrom(o => EmailStateEnumModel.Pending))
                 .ForMember(m => m.CreatedBy, opt => opt.MapFrom(o => o.Sender))
                 .ForMember(m => m.CreatedOn, opt => opt.MapFrom(o => DateTimeOffset.UtcNow));
+        }
+
+        private void CreateEmailDtoMapping()
+        {
+            CreateMap<EmailModel, EmailDto>()
+                .ForMember(m => m.Recipients, opt => opt.MapFrom(o => o.Recipients.Select(r => r.EmailAddress)));
         }
 
         private void CreateEmailHeaderDtoMapping()

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Codibly.EmailService.Api.Dtos.Dtos;
+using Codibly.EmailService.Api.Dtos.Models;
 using Codibly.EmailService.Api.Models;
 using Codibly.EmailService.Api.Models.Models;
+using Codibly.EmailService.Api.Services.Exceptions;
 using Codibly.EmailService.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using EmailModel = Codibly.EmailService.Api.Models.Models.Email;
@@ -40,6 +41,17 @@ namespace Codibly.EmailService.Api.Services.Services
             return _mapper.Map<IEnumerable<EmailHeaderDto>>(emails);
         }
 
+        public async Task<EmailDto> GetEmail(int id)
+        {
+            var email = await _dbContext.Emails.AsNoTracking()
+                .Include(e => e.Recipients)
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            _ = email ?? throw new NotFoundException($"Email with id: {id} was not found");
+
+            return _mapper.Map<EmailDto>(email);
+        }
+
         public async Task<EmailDto> PostEmail(EmailCreateableDto data)
         {
             // TODO: Implement proper exception
@@ -65,7 +77,7 @@ namespace Codibly.EmailService.Api.Services.Services
 
             await _dbContext.SaveChangesAsync();
 
-            return await Task.FromResult(new EmailDto());
+            return _mapper.Map<EmailDto>(createdEmail.Entity);
         }
 
         #endregion

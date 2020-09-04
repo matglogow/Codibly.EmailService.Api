@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Codibly.EmailService.Api.Dtos.Dtos
+namespace Codibly.EmailService.Api.Dtos.Models
 {
     public class EmailCreateableDto
     {

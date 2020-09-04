@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Codibly.EmailService.Api.Dtos.Dtos;
+using Codibly.EmailService.Api.Dtos.Models;
 using Codibly.EmailService.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Codibly.EmailService.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/[controller]")]
     [Consumes("application/json")]
     [Produces("application/json")]
     public class EmailsController : ControllerBase
@@ -28,6 +28,12 @@ namespace Codibly.EmailService.Api.Controllers
         #endregion
 
         #region Public methods
+
+        [HttpGet("{id}")]
+        public async Task<EmailDto> Get(int id)
+        {
+            return await _emailService.GetEmail(id);
+        }
 
         [HttpGet]
         public async Task<IEnumerable<EmailHeaderDto>> GetAll()
