@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Codibly.EmailService.Api.Dtos.Enums;
 using Codibly.EmailService.Api.Dtos.Models;
 using Codibly.EmailService.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -41,10 +42,22 @@ namespace Codibly.EmailService.Api.Controllers
             return await _emailService.GetAllEmails();
         }
 
+        [HttpGet("{id}/state")]
+        public async Task<EmailStateEnumDto> GetState(int id)
+        {
+            return await _emailService.GetEmailState(id);
+        }
+
         [HttpPost]
         public async Task<EmailDto> Post([FromBody] EmailCreateableDto data)
         {
             return await _emailService.PostEmail(data);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<EmailDto> Put(int id, [FromBody] EmailDto data)
+        {
+            return await _emailService.UpdateEmail(id, data);
         }
 
         #endregion
