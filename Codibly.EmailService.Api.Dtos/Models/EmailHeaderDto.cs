@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Codibly.EmailService.Api.Dtos.Enums;
 
 namespace Codibly.EmailService.Api.Dtos.Models
 {
+    [ExcludeFromCodeCoverage]
     public class EmailHeaderDto
     {
         #region Properties

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Codibly.EmailService.Api.Dtos.Models
 {
+    [ExcludeFromCodeCoverage]
     public class EmailCreateableDto
     {
         #region Properties

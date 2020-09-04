@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Codibly.EmailService.Api.Services.Exceptions
 {
+    [ExcludeFromCodeCoverage]
     public class ValidationException : Exception
     {
         #region Construction

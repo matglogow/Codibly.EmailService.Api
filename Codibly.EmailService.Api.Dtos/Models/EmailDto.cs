@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Codibly.EmailService.Api.Dtos.Enums;
 
 namespace Codibly.EmailService.Api.Dtos.Models
 {
+    [ExcludeFromCodeCoverage]
     public class EmailDto
     {
         #region Properties
@@ -19,6 +21,7 @@ namespace Codibly.EmailService.Api.Dtos.Models
         public virtual ICollection<string> Recipients { get; set; }
 
         public string Sender { get; set; }
+        public DateTimeOffset SendOn { get; set; }
 
         public EmailStateEnumDto State { get; set; }
 

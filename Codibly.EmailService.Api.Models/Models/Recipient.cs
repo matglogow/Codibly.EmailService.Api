@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Codibly.EmailService.Api.Models.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Recipient
     {
         #region Properties

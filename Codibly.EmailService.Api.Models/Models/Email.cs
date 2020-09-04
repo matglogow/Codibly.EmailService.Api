@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Codibly.EmailService.Api.Models.Models.Enums;
 
 namespace Codibly.EmailService.Api.Models.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Email : EntityBase
     {
         #region Properties

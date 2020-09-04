@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Codibly.EmailService.Api.Models.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class MakeSendOnFieldNullable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
