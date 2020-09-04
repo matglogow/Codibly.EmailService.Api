@@ -59,22 +59,28 @@ namespace Codibly.EmailService.Api.Services.Services
 
         private SmtpClient ConfigureSmtpClient()
         {
-            var client = new SmtpClient();
-            client.Host = _smtpSettings.Server;
-            client.Port = _smtpSettings.Port;
-            client.EnableSsl = true;
-            client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password);
-
-            return client;
+            return new SmtpClient
+            {
+                Host = _smtpSettings.Server,
+                Port = _smtpSettings.Port,
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential
+                {
+                    UserName = _smtpSettings.Username,
+                    Password = _smtpSettings.Password
+                }
+            };
         }
 
         private MailMessage CreateEmailMessage(Email email)
         {
-            var mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress(email.Sender);
-            mailMessage.Subject = email.Subject;
-            mailMessage.Body = email.Content;
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(email.Sender),
+                Subject = email.Subject,
+                Body = email.Content
+            };
 
             email.Recipients.ForAll(emailRecipient => mailMessage.To.Add(new MailAddress(emailRecipient.EmailAddress)));
 
