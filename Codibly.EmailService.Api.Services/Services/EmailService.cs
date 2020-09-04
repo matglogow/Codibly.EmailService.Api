@@ -54,13 +54,11 @@ namespace Codibly.EmailService.Api.Services.Services
 
         public async Task<EmailDto> PostEmail(EmailCreateableDto data)
         {
-            // TODO: Implement proper exception
-            _ = data ?? throw new Exception();
+            _ = data ?? throw new ValidationException("Email data is empty");
 
             if (data.Recipients == null || !data.Recipients.Any())
             {
-                // TODO: Implement proper exception
-                throw new Exception();
+                throw new ValidationException("Invalid number of recipients. Min allowed recipients is: 1");
             }
 
             var emailToCreate = _mapper.Map<EmailModel>(data);
